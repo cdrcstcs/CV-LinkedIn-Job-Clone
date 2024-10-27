@@ -49,10 +49,10 @@ export default function SurveyQuestions({questions, onQuestionsUpdate}) {
         <h3 className="text-2xl font-bold">Questions</h3>
         <button
           type="button"
-          className="flex items-center text-sm py-1 px-4 rounded-sm text-white bg-gray-600 hover:bg-gray-700"
+          className="flex items-center text-sm py-1 mr-1 px-4 rounded-sm text-white bg-blue-600 hover:bg-blue-200"
           onClick={() => addQuestion()}
         >
-          <PlusIcon className="w-4 mr-2"/>
+          <PlusIcon className="w-5 mr-2 "/>
           Add question
         </button>
       </div>

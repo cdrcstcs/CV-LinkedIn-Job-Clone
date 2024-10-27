@@ -74,8 +74,8 @@ export default function QuestionEditor({
             mr-2
             rounded-sm
             text-white
-            bg-gray-600
-            hover:bg-gray-700"
+            bg-blue-600
+            hover:bg-blue-200"
               onClick={() => addQuestion(index + 1)}
             >
               <PlusIcon className="w-4" />
@@ -184,8 +184,8 @@ export default function QuestionEditor({
                 px-2
                 rounded-sm
                 text-white
-                bg-gray-600
-                hover:bg-gray-700"
+                bg-blue-600
+                hover:bg-blue-200"
                 >
                   Add
                 </button>

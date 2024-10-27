@@ -55,9 +55,9 @@ export default function DefaultLayout() {
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
                       <img
-                        className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
+                        className="h-8 w-32"
+                        src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg"
+                        alt="LinkedIn"
                       />
                     </div>
                     <div className="hidden md:block">
@@ -69,8 +69,8 @@ export default function DefaultLayout() {
                             className={({ isActive }) =>
                               classNames(
                                 isActive
-                                  ? "bg-gray-900 text-white"
-                                  : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                  ? "bg-white text-blue-600"
+                                  : "text-blue-600 bg-white hover:bg-blue-200 ",
                                 "px-3 py-2 rounded-md text-sm font-medium"
                               )
                             }
@@ -88,7 +88,7 @@ export default function DefaultLayout() {
                         <div>
                           <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
-                            <UserIcon className="w-8 h-8 bg-black/25 p-2 rounded-full text-white" />
+                            <UserIcon className="w-8 h-8 bg-white p-2 rounded-full text-blue-600" />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -119,7 +119,7 @@ export default function DefaultLayout() {
                   </div>
                   <div className="-mr-2 flex md:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
                         <XMarkIcon
@@ -146,8 +146,8 @@ export default function DefaultLayout() {
                       className={({ isActive }) =>
                         classNames(
                           isActive
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          ? "bg-white text-blue-600"
+                          : "text-blue-600 bg-white hover:bg-blue-200 ",
                           "block px-3 py-2 rounded-md text-base font-medium"
                         )
                       }
@@ -159,7 +159,7 @@ export default function DefaultLayout() {
                 <div className="border-t border-gray-700 pt-4 pb-3">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
-                      <UserIcon className="w-8 h-8 bg-black/25 p-2 rounded-full text-white" />
+                      <UserIcon className="w-8 h-8 bg-blue-600 p-2 rounded-full text-white" />
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">
