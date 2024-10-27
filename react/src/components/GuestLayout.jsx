@@ -5,24 +5,24 @@ export default function GuestLayout() {
   const { userToken } = useStateContext();
 
   if (userToken) {
-    return <Navigate to="/" />
+    return <Navigate to="/" />;
   }
 
   return (
-    <div>
-      <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md space-y-8">
-          <div>
-            <img
-              className="mx-auto h-12 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt="Your Company"
-            />
-          </div>
-
-          <Outlet />
+    <div className="min-h-screen bg-blue-50 flex items-center justify-center">
+      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-8">
+        <div className="flex items-center justify-center mb-6">
+          <img
+            className="h-12 w-auto"
+            src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg"
+            alt="LinkedIn"
+          />
         </div>
+
+        {/* Outlet for login or registration form */}
+        <Outlet />
+
       </div>
     </div>
-  )
+  );
 }

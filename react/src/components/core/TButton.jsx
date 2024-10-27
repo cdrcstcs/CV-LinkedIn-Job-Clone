@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function TButton({
-  color = "indigo",
+  color = "linkedin", // Change the default color to linkedin
   to = "",
   circle = false,
   href = "",
@@ -24,22 +24,24 @@ export default function TButton({
     classes = [...classes, "transition-colors"];
 
     switch (color) {
-      case "indigo":
-        classes = [...classes, "text-indigo-500", "focus:border-indigo-500"];
+      case "linkedin":
+        classes = [...classes, "text-blue-600", "focus:border-blue-600"];
         break;
       case "red":
         classes = [...classes, "text-red-500", "focus:border-red-500"];
+        break;
+      // Remove indigo option
     }
   } else {
     classes = [...classes, "text-white", "focus:ring-2", "focus:ring-offset-2"];
 
     switch (color) {
-      case "indigo":
+      case "linkedin":
         classes = [
           ...classes,
-          "bg-indigo-600",
-          "hover:bg-indigo-700",
-          "focus:ring-indigo-500",
+          "bg-blue-600", // LinkedIn background color
+          "hover:bg-blue-700",
+          "focus:ring-blue-500",
         ];
         break;
       case "red":
@@ -58,6 +60,7 @@ export default function TButton({
           "focus:ring-emerald-400",
         ];
         break;
+      // Remove indigo option
     }
   }
 
