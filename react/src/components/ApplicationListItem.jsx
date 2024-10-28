@@ -2,7 +2,7 @@ import {CheckCircleIcon, ArrowTopRightOnSquareIcon, PencilIcon, TrashIcon } from
 import React from "react";
 import TButton from "./core/TButton";
 
-export default function ApplicationItem({ application, onDeleteClick }) {
+export default function ApplicationItem({ application, onDeleteClick, pageType }) {
   return (
     <div className="flex flex-col py-6 px-5 bg-white shadow-md rounded-lg hover:shadow-lg transition-shadow duration-300">
       <img
@@ -17,16 +17,16 @@ export default function ApplicationItem({ application, onDeleteClick }) {
       ></div>
 
       <div className="flex flex-col mt-4">
-        <TButton
+        {pageType == 'yours'? (<TButton
           to={`/applications/${application.id}`}
         >
           <PencilIcon className="w-5 h-5 mr-2" />
           Edit Application
-        </TButton>
-        <div className="my-2 h-1"></div>
+        </TButton>) : null }
+        {pageType == 'yours'?(<div className="my-2 h-1"></div>):null}
         <TButton href={`/application/public/${application.slug}`}>
           <CheckCircleIcon className="w-6 h-6 mr-2" />
-          Easy Apply
+          {pageType == 'yours'? "Share" : "Easy Apply"}
         </TButton>
         <div className="flex justify-between items-center">
           <TButton href={`/view/application/${application.slug}`} circle link>

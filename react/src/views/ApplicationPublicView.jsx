@@ -59,7 +59,7 @@ export default function ApplicationPublicView() {
           </div>
 
           {applicationFinished && (
-            <div className="py-4 px-4 bg-green-500 text-white rounded-lg mb-4">
+            <div className="py-4 px-4 bg-blue-600 text-white rounded-lg mb-4">
               Thank you for participating in the application!
             </div>
           )}

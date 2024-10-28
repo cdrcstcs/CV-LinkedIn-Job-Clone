@@ -8,7 +8,7 @@ import ApplicationListItem from "../components/ApplicationListItem";
 import { useStateContext } from "../contexts/ContextProvider";
 import router from "../router";
 
-export default function Applications() {
+export default function YourApplications() {
   const { showToast } = useStateContext();
   const [applications, setApplications] = useState([]);
   const [meta, setMeta] = useState({});
@@ -28,7 +28,7 @@ export default function Applications() {
   };
 
   const getApplications = (url) => {
-    url = url || "/application";
+    url = url || "/application/user";
     setLoading(true);
     axiosClient.get(url).then(({ data }) => {
       setApplications(data.data);
@@ -43,14 +43,20 @@ export default function Applications() {
 
   return (
     <PageComponent
-      title="All Jobs"
+      title="Your Job Posts"
+      buttons={
+        <TButton  to="/applications/create">
+          <PlusCircleIcon className="h-6 w-6 mr-2" />
+          Create new
+        </TButton>
+      }
     >
       {loading && <div className="text-center text-lg">Loading...</div>}
       {!loading && (
         <div>
           {applications.length === 0 && (
             <div className="py-8 text-center text-gray-700">
-              There is no jobs currently
+              You don't have any job posts created
             </div>
           )}
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
@@ -59,6 +65,7 @@ export default function Applications() {
                 application={application}
                 key={application.id}
                 onDeleteClick={onDeleteClick}
+                pageType={"yours"}
               />
             ))}
           </div>

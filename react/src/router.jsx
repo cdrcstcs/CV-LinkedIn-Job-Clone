@@ -6,7 +6,7 @@ import Signup from "./views/Signup";
 import ApplicationPublicView from "./views/ApplicationPublicView";
 import Applications from "./views/Applications";
 import ApplicationView from "./views/ApplicationView";
-
+import YourApplications from "./views/YourApplications";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -15,6 +15,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Applications />,
+      },
+      {
+        path: "/yours",
+        element: <YourApplications />,
       },
       {
         path: "/applications/create",

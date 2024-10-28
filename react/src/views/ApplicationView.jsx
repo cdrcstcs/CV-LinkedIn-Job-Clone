@@ -61,7 +61,7 @@ export default function ApplicationView() {
     res
       .then((res) => {
         console.log(res);
-        navigate("/");
+        navigate("/yours");
         if (id) {
           showToast("The application was updated");
         } else {

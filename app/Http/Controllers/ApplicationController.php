@@ -28,6 +28,13 @@ class ApplicationController extends Controller
      */
     public function index(Request $request)
     {
+        return ApplicationResource::collection(
+            Application::orderBy('created_at', 'desc')->paginate(6)
+        );
+    }
+
+    public function userApplication(Request $request)
+    {
         $user = $request->user();
 
         return ApplicationResource::collection(
@@ -36,7 +43,6 @@ class ApplicationController extends Controller
                 ->paginate(6)
         );
     }
-
     /**
      * Store a newly created resource in storage.
      *
