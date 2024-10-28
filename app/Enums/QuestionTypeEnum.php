@@ -1,12 +1,22 @@
 <?php
-
 namespace App\Enums;
 
-enum QuestionTypeEnum: string
+class QuestionTypeEnum
 {
-    case Text = 'text';
-    case Textarea = 'textarea';
-    case Select = 'select';
-    case Radio = 'radio';
-    case Checkbox = 'checkbox';
+    const TEXT = 'text';
+    const TEXTAREA = 'textarea';
+    const SELECT = 'select';
+    const RADIO = 'radio';
+    const CHECKBOX = 'checkbox';
+
+    public static function getValues()
+    {
+        return [
+            self::TEXT,
+            self::TEXTAREA,
+            self::SELECT,
+            self::RADIO,
+            self::CHECKBOX,
+        ];
+    }
 }

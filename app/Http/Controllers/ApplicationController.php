@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Log; // Ensure you include this at the top of your file
 use App\Enums\QuestionTypeEnum;
 use App\Http\Requests\StoreApplicationAnswerRequest;
 use App\Http\Resources\ApplicationResource;
@@ -213,14 +213,18 @@ class ApplicationController extends Controller
      */
     private function createQuestion($data)
     {
+        Log::info('Creating question with data:', $data);
+
         if (is_array($data['data'])) {
             $data['data'] = json_encode($data['data']);
         }
+
+        Log::info('Creating question with data:', $data);
+
+
         $validator = Validator::make($data, [
             'question' => 'required|string',
-            'type' => [
-                'required', new Enum(QuestionTypeEnum::class)
-            ],
+            'type' => 'required|in:' . implode(',', QuestionTypeEnum::getValues()),
             'description' => 'nullable|string',
             'data' => 'present',
             'application_id' => 'exists:App\Models\Application,id'
@@ -246,7 +250,7 @@ class ApplicationController extends Controller
         $validator = Validator::make($data, [
             'id' => 'exists:App\Models\ApplicationQuestion,id',
             'question' => 'required|string',
-            'type' => ['required', new Enum(QuestionTypeEnum::class)],
+            'type' => 'required|in:' . implode(',', QuestionTypeEnum::getValues()),
             'description' => 'nullable|string',
             'data' => 'present',
         ]);
