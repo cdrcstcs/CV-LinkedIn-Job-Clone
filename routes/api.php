@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ApplicationController;
 use Illuminate\Http\Request;
@@ -9,7 +10,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     
     // Explicit routes for ApplicationController
-    Route::get('/application', [ApplicationController::class, 'index']); // List all applications
+    Route::get('/application', [ApplicationController::class, 'index']); // List all applications with search
     Route::get('/application/user', [ApplicationController::class, 'userApplication']); // List user's applications
     Route::get('/application/{application}', [ApplicationController::class, 'show']); // Show a specific application
     Route::post('/application', [ApplicationController::class, 'store']); // Store a new application

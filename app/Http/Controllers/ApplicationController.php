@@ -28,10 +28,32 @@ class ApplicationController extends Controller
      */
     public function index(Request $request)
     {
+        $query = Application::query();
+
+        // Check if there's a search term in the request
+        if ($request->has('search') && $request->search) {
+            $searchTerm = $request->search;
+
+            // Filter by title or description
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('title', 'like', "%{$searchTerm}%")
+                ->orWhere('description', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        // Check if there's a sort order in the request
+        if ($request->has('sort') && $request->sort === 'latest') {
+            $query->orderBy('created_at', 'desc');
+        } else {
+            $query->orderBy('created_at', 'asc'); // Default sort order (optional)
+        }
+
+        // Paginate the results
         return ApplicationResource::collection(
-            Application::orderBy('created_at', 'desc')->paginate(6)
+            $query->paginate(6)
         );
     }
+
 
     public function userApplication(Request $request)
     {
