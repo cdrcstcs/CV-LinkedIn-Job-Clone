@@ -33,7 +33,7 @@ class ApplicationController extends Controller
         return ApplicationResource::collection(
             Application::where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')
-                ->paginate(2)
+                ->paginate(6)
         );
     }
 

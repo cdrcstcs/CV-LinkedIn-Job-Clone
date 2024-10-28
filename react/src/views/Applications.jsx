@@ -43,7 +43,7 @@ export default function Applications() {
 
   return (
     <PageComponent
-      title="Applications"
+      title="Jobs"
       buttons={
         <TButton  to="/applications/create">
           <PlusCircleIcon className="h-6 w-6 mr-2" />

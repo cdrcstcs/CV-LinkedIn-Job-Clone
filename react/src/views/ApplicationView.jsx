@@ -1,4 +1,4 @@
-import { LinkIcon, PhotoIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {  PhotoIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import TButton from "../components/core/TButton.jsx";
 import PageComponent from "../components/PageComponent.jsx";
@@ -61,7 +61,7 @@ export default function ApplicationView() {
     res
       .then((res) => {
         console.log(res);
-        navigate("/applications");
+        navigate("/");
         if (id) {
           showToast("The application was updated");
         } else {
@@ -108,14 +108,6 @@ export default function ApplicationView() {
   return (
     <PageComponent
       title={!id ? "Create new Application" : "Update Application"}
-      buttons={
-        <div className="flex gap-2">
-          <TButton  href={`/application/public/${application.slug}`}>
-            <LinkIcon className="h-4 w-4 mr-2" />
-            Public Link
-          </TButton>
-        </div>
-      }
     >
       {loading && <div className="text-center text-lg">Loading...</div>}
       {!loading && (

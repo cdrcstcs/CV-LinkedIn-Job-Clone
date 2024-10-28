@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axiosClient from "../axios";
 import PublicQuestionView from "../components/PublicQuestionView";
@@ -7,9 +6,7 @@ import PublicQuestionView from "../components/PublicQuestionView";
 export default function ApplicationPublicView() {
   const answers = {};
   const [applicationFinished, setApplicationFinished] = useState(false);
-  const [application, setApplication] = useState({
-    questions: [],
-  });
+  const [application, setApplication] = useState({ questions: [] });
   const [loading, setLoading] = useState(false);
   const { slug } = useParams();
 
@@ -24,66 +21,63 @@ export default function ApplicationPublicView() {
       .catch(() => {
         setLoading(false);
       });
-  }, []);
+  }, [slug]);
 
   function answerChanged(question, value) {
     answers[question.id] = value;
-    console.log(question, value);
   }
 
   function onSubmit(ev) {
     ev.preventDefault();
 
-    console.log(answers);
     axiosClient
-      .post(`/application/${application.id}/answer`, {
-        answers,
-      })
-      .then((response) => {
-        debugger;
+      .post(`/application/${application.id}/answer`, { answers })
+      .then(() => {
         setApplicationFinished(true);
       });
   }
 
   return (
-    <div>
-      {loading && <div className="flex justify-center">Loading..</div>}
+    <div className="container mx-auto p-4">
+      {loading && <div className="flex justify-center text-lg">Loading...</div>}
       {!loading && (
-        <form onSubmit={(ev) => onSubmit(ev)} className="container mx-auto p-4">
-          <div className="grid grid-cols-6">
-            <div className="mr-4">
-              <img src={application.image_url} alt="" />
+        <form onSubmit={onSubmit} className="bg-white shadow-md rounded-lg p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="flex justify-center">
+              <img
+                src={application.image_url}
+                alt=""
+                className="w-full h-auto aspect-[2/1] object-cover rounded-lg shadow-lg"
+              />
             </div>
 
-            <div className="col-span-5">
-              <h1 className="text-3xl mb-3">{application.title}</h1>
-              <p className="text-gray-500 text-sm mb-3">
-                Expire Date: {application.expire_date}
-              </p>
-              <p className="text-gray-500 text-sm mb-3">{application.description}</p>
+            <div>
+              <h1 className="text-2xl font-bold mb-2">{application.title}</h1>
+              <p className="text-gray-500 text-sm mb-1">Expire Date: {application.expire_date}</p>
+              <p className="text-gray-700 mb-4">{application.description}</p>
             </div>
           </div>
 
           {applicationFinished && (
-            <div className="py-8 px-6 bg-blue-600 text-white w-[600px] mx-auto">
-              Thank you for participating in the application
+            <div className="py-4 px-4 bg-green-500 text-white rounded-lg mb-4">
+              Thank you for participating in the application!
             </div>
           )}
+
           {!applicationFinished && (
             <>
-              <div>
-                {application.questions.map((question, index) => (
-                  <PublicQuestionView
-                    key={question.id}
-                    question={question}
-                    index={index}
-                    answerChanged={(val) => answerChanged(question, val)}
-                  />
-                ))}
-              </div>
+              <h2 className="text-lg font-semibold mb-4">Questions</h2>
+              {application.questions.map((question, index) => (
+                <PublicQuestionView
+                  key={question.id}
+                  question={question}
+                  index={index}
+                  answerChanged={(val) => answerChanged(question, val)}
+                />
+              ))}
               <button
                 type="submit"
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200"
               >
                 Submit
               </button>

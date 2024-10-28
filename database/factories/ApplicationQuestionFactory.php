@@ -12,7 +12,7 @@ class ApplicationQuestionFactory extends Factory
     public function definition()
     {
         return [
-            'type' => $this->faker->randomElement(['text', 'multiple_choice']),
+            'type' => $this->faker->randomElement(['text']),
             'question' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'data' => $this->faker->text,
