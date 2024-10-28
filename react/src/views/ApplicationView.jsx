@@ -1,20 +1,20 @@
 import { LinkIcon, PhotoIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import TButton from "../components/core/TButton";
-import PageComponent from "../components/PageComponent";
+import TButton from "../components/core/TButton.jsx";
+import PageComponent from "../components/PageComponent.jsx";
 import axiosClient from "../axios.js";
 import { useNavigate, useParams } from "react-router-dom";
-import SurveyQuestions from "../components/SurveyQuestions";
+import ApplicationQuestions from "../components/ApplicationQuestions.jsx";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../contexts/ContextProvider.jsx";
 
-export default function SurveyView() {
+export default function ApplicationView() {
   const { showToast } = useStateContext();
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [survey, setSurvey] = useState({
+  const [application, setApplication] = useState({
     title: "",
     slug: "",
     status: false,
@@ -32,8 +32,8 @@ export default function SurveyView() {
 
     const reader = new FileReader();
     reader.onload = () => {
-      setSurvey({
-        ...survey,
+      setApplication({
+        ...application,
         image: file,
         image_url: reader.result,
       });
@@ -46,26 +46,26 @@ export default function SurveyView() {
   const onSubmit = (ev) => {
     ev.preventDefault();
 
-    const payload = { ...survey };
+    const payload = { ...application };
     if (payload.image) {
       payload.image = payload.image_url;
     }
     delete payload.image_url;
     let res = null;
     if (id) {
-      res = axiosClient.put(`/survey/${id}`, payload);
+      res = axiosClient.put(`/application/${id}`, payload);
     } else {
-      res = axiosClient.post("/survey", payload);
+      res = axiosClient.post("/application", payload);
     }
 
     res
       .then((res) => {
         console.log(res);
-        navigate("/surveys");
+        navigate("/applications");
         if (id) {
-          showToast("The survey was updated");
+          showToast("The application was updated");
         } else {
-          showToast("The survey was created");
+          showToast("The application was created");
         }
       })
       .catch((err) => {
@@ -77,28 +77,28 @@ export default function SurveyView() {
   };
 
   function onQuestionsUpdate(questions) {
-    setSurvey({
-      ...survey,
+    setApplication({
+      ...application,
       questions,
     });
   }
 
   const addQuestion = () => {
-    survey.questions.push({
+    application.questions.push({
       id: uuidv4(),
       type: "text",
       question: "",
       description: "",
       data: {},
     });
-    setSurvey({ ...survey });
+    setApplication({ ...application });
   };
 
   useEffect(() => {
     if (id) {
       setLoading(true);
-      axiosClient.get(`/survey/${id}`).then(({ data }) => {
-        setSurvey(data.data);
+      axiosClient.get(`/application/${id}`).then(({ data }) => {
+        setApplication(data.data);
         setLoading(false);
       });
     }
@@ -107,10 +107,10 @@ export default function SurveyView() {
 
   return (
     <PageComponent
-      title={!id ? "Create new Survey" : "Update Survey"}
+      title={!id ? "Create new Application" : "Update Application"}
       buttons={
         <div className="flex gap-2">
-          <TButton  href={`/survey/public/${survey.slug}`}>
+          <TButton  href={`/application/public/${application.slug}`}>
             <LinkIcon className="h-4 w-4 mr-2" />
             Public Link
           </TButton>
@@ -132,14 +132,14 @@ export default function SurveyView() {
                   Photo
                 </label>
                 <div className="mt-1 flex items-center">
-                  {survey.image_url && (
+                  {application.image_url && (
                     <img
-                      src={survey.image_url}
+                      src={application.image_url}
                       alt=""
                       className="w-32 h-32 object-cover"
                     />
                   )}
-                  {!survey.image_url && (
+                  {!application.image_url && (
                     <span className="flex justify-center  items-center text-gray-400 h-12 w-12 overflow-hidden rounded-full bg-gray-100">
                       <PhotoIcon className="w-8 h-8" />
                     </span>
@@ -165,17 +165,17 @@ export default function SurveyView() {
                   htmlFor="title"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Survey Title
+                  Application Title
                 </label>
                 <input
                   type="text"
                   name="title"
                   id="title"
-                  value={survey.title}
+                  value={application.title}
                   onChange={(ev) =>
-                    setSurvey({ ...survey, title: ev.target.value })
+                    setApplication({ ...application, title: ev.target.value })
                   }
-                  placeholder="Survey Title"
+                  placeholder="Application Title"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
               </div>
@@ -189,15 +189,15 @@ export default function SurveyView() {
                 >
                   Description
                 </label>
-                {/* <pre>{ JSON.stringify(survey, undefined, 2) }</pre> */}
+                {/* <pre>{ JSON.stringify(application, undefined, 2) }</pre> */}
                 <textarea
                   name="description"
                   id="description"
-                  value={survey.description || ""}
+                  value={application.description || ""}
                   onChange={(ev) =>
-                    setSurvey({ ...survey, description: ev.target.value })
+                    setApplication({ ...application, description: ev.target.value })
                   }
-                  placeholder="Describe your survey"
+                  placeholder="Describe your application"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 ></textarea>
               </div>
@@ -215,9 +215,9 @@ export default function SurveyView() {
                   type="date"
                   name="expire_date"
                   id="expire_date"
-                  value={survey.expire_date}
+                  value={application.expire_date}
                   onChange={(ev) =>
-                    setSurvey({ ...survey, expire_date: ev.target.value })
+                    setApplication({ ...application, expire_date: ev.target.value })
                   }
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
@@ -231,9 +231,9 @@ export default function SurveyView() {
                     id="status"
                     name="status"
                     type="checkbox"
-                    checked={survey.status}
+                    checked={application.status}
                     onChange={(ev) =>
-                      setSurvey({ ...survey, status: ev.target.checked })
+                      setApplication({ ...application, status: ev.target.checked })
                     }
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   />
@@ -246,7 +246,7 @@ export default function SurveyView() {
                     Active
                   </label>
                   <p className="text-gray-500">
-                    Whether to make survey publicly available
+                    Whether to make application publicly available
                   </p>
                 </div>
               </div>
@@ -255,8 +255,8 @@ export default function SurveyView() {
               <button type="button" onClick={addQuestion}>
                 Add question
               </button>
-              <SurveyQuestions
-                questions={survey.questions}
+              <ApplicationQuestions
+                questions={application.questions}
                 onQuestionsUpdate={onQuestionsUpdate}
               />
             </div>

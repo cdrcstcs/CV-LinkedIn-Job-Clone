@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\SurveyAnswerResource;
-use App\Http\Resources\SurveyResourceDashboard;
-use App\Models\Survey;
-use App\Models\SurveyAnswer;
+use App\Http\Resources\AppicationAnswerResource;
+use App\Http\Resources\AppicationResourceDashboard;
+use App\Models\Appication;
+use App\Models\AppicationAnswer;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -15,31 +15,31 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        // Total Number of Surveys
-        $total = Survey::query()->where('user_id', $user->id)->count();
+        // Total Number of Appications
+        $total = Appication::query()->where('user_id', $user->id)->count();
 
-        // Latest Survey
-        $latest = Survey::query()->where('user_id', $user->id)->latest('created_at')->first();
+        // Latest Appication
+        $latest = Appication::query()->where('user_id', $user->id)->latest('created_at')->first();
 
         // Total Number of answers
-        $totalAnswers = SurveyAnswer::query()
-            ->join('surveys', 'survey_answers.survey_id', '=', 'surveys.id')
-            ->where('surveys.user_id', $user->id)
+        $totalAnswers = AppicationAnswer::query()
+            ->join('applications', 'application_answers.application_id', '=', 'applications.id')
+            ->where('applications.user_id', $user->id)
             ->count();
 
         // Latest 5 answer
-        $latestAnswers = SurveyAnswer::query()
-            ->join('surveys', 'survey_answers.survey_id', '=', 'surveys.id')
-            ->where('surveys.user_id', $user->id)
+        $latestAnswers = ApplicationAnswer::query()
+            ->join('applications', 'application_answers.application_id', '=', 'applications.id')
+            ->where('applications.user_id', $user->id)
             ->orderBy('end_date', 'DESC')
             ->limit(5)
-            ->getModels('survey_answers.*');
+            ->getModels('application_answers.*');
 
         return [
-            'totalSurveys' => $total,
-            'latestSurvey' => $latest ? new SurveyResourceDashboard($latest) : null,
+            'totalapplications' => $total,
+            'latestapplication' => $latest ? new ApplicationResourceDashboard($latest) : null,
             'totalAnswers' => $totalAnswers,
-            'latestAnswers' => SurveyAnswerResource::collection($latestAnswers)
+            'latestAnswers' => ApplicationAnswerResource::collection($latestAnswers)
         ];
     }
 }

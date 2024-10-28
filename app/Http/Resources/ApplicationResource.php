@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\URL;
 
-class SurveyResource extends JsonResource
+class ApplicationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,7 +25,7 @@ class SurveyResource extends JsonResource
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
             'expire_date' => (new \DateTime($this->expire_date))->format('Y-m-d'),
-            'questions' => SurveyQuestionResource::collection($this->questions)
+            'questions' => ApplicationQuestionResource::collection($this->questions)
         ];
     }
 }

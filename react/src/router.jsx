@@ -4,9 +4,9 @@ import GuestLayout from "./components/GuestLayout";
 import Dashboard from "./views/Dashboard";
 import Login from "./views/Login";
 import Signup from "./views/Signup";
-import SurveyPublicView from "./views/SurveyPublicView";
-import Surveys from "./views/Surveys";
-import SurveyView from "./views/SurveyView";
+import ApplicationPublicView from "./views/ApplicationPublicView";
+import Applications from "./views/Applications";
+import ApplicationView from "./views/ApplicationView";
 
 const router = createBrowserRouter([
   {
@@ -22,16 +22,16 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "/surveys",
-        element: <Surveys />,
+        path: "/applications",
+        element: <Applications />,
       },
       {
-        path: "/surveys/create",
-        element: <SurveyView />,
+        path: "/applications/create",
+        element: <ApplicationView />,
       },
       {
-        path: "/surveys/:id",
-        element: <SurveyView />,
+        path: "/applications/:id",
+        element: <ApplicationView />,
       },
     ],
   },
@@ -50,8 +50,8 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/survey/public/:slug",
-    element: <SurveyPublicView />,
+    path: "/application/public/:slug",
+    element: <ApplicationPublicView />,
   },
 ]);
 

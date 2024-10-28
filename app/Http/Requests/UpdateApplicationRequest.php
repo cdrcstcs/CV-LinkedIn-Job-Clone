@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateSurveyRequest extends FormRequest
+class UpdateApplicationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,9 +13,9 @@ class UpdateSurveyRequest extends FormRequest
      */
     public function authorize()
     {
-        $survey = $this->route('survey');
+        $application = $this->route('application');
 
-        if ($this->user()->id !== $survey->user_id) {
+        if ($this->user()->id !== $application->user_id) {
             return false;
         }
         return true;

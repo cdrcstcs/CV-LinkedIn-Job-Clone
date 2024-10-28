@@ -14,7 +14,7 @@ import Toast from "./Toast";
 
 const navigation = [
   { name: "Dashboard", to: "/" },
-  { name: "Surveys", to: "/surveys" },
+  { name: "Applications", to: "/applications" },
 ];
 
 function classNames(...classes) {

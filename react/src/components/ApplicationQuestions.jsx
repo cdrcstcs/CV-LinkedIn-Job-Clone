@@ -4,7 +4,7 @@ import {useState} from "react";
 import {v4 as uuidv4} from "uuid";
 import QuestionEditor from "./QuestionEditor";
 
-export default function SurveyQuestions({questions, onQuestionsUpdate}) {
+export default function ApplicationQuestions({questions, onQuestionsUpdate}) {
   const [myQuestions, setMyQuestions] = useState([...questions]);
 
   const addQuestion = (index) => {

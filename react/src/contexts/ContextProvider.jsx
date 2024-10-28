@@ -5,7 +5,7 @@ import { createContext } from "react";
 const StateContext = createContext({
   currentUser: {},
   userToken: null,
-  surveys: [],
+  applications: [],
   questionTypes: [],
   toast: {
     message: null,
@@ -15,10 +15,10 @@ const StateContext = createContext({
   setUserToken: () => {},
 });
 
-const tmpSurveys = [
+const tmpApplications = [
   {
     "id": 1,
-    "image_url": "https:\/\/api.yoursurveys.xyz\/images\/vJutXzn02CDwdOyh.png",
+    "image_url": "https:\/\/api.yourapplications.xyz\/images\/vJutXzn02CDwdOyh.png",
     "title": "TheCodeholic YouTube channel",
     "slug": "thecodeholic-youtube-channel",
     "status": true,
@@ -159,7 +159,7 @@ const tmpSurveys = [
   },
   {
     "id": 2,
-    "image_url": "https:\/\/api.yoursurveys.xyz\/images\/gjIHElz4aKrL0nT0.png",
+    "image_url": "https:\/\/api.yourapplications.xyz\/images\/gjIHElz4aKrL0nT0.png",
     "title": "React",
     "slug": "react",
     "status": true,
@@ -171,7 +171,7 @@ const tmpSurveys = [
   },
   {
     "id": 3,
-    "image_url": "https:\/\/api.yoursurveys.xyz\/images\/WPfzo0g66huUYYwR.png",
+    "image_url": "https:\/\/api.yourapplications.xyz\/images\/WPfzo0g66huUYYwR.png",
     "title": "Laravel 9",
     "slug": "laravel-9",
     "status": true,
@@ -186,7 +186,7 @@ const tmpSurveys = [
 export const ContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const [userToken, _setUserToken] = useState(localStorage.getItem('TOKEN') || '');
-  const [surveys, setSurveys] = useState(tmpSurveys)
+  const [applications, setApplications] = useState(tmpApplications)
   const [questionTypes] = useState(['text', "select", "radio", "checkbox", "textarea"])
   const [toast, setToast] = useState({message: '', show: false})
 
@@ -213,7 +213,7 @@ export const ContextProvider = ({ children }) => {
         setCurrentUser,
         userToken,
         setUserToken,
-        surveys,
+        applications,
         questionTypes,
         toast,
         showToast

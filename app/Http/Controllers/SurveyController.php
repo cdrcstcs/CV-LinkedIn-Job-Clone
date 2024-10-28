@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enums\QuestionTypeEnum;
-use App\Http\Requests\StoreSurveyAnswerRequest;
-use App\Http\Resources\SurveyResource;
-use App\Models\Survey;
-use App\Http\Requests\StoreSurveyRequest;
-use App\Http\Requests\UpdateSurveyRequest;
-use App\Models\SurveyAnswer;
-use App\Models\SurveyQuestion;
-use App\Models\SurveyQuestionAnswer;
+use App\Http\Requests\StoreApplicationAnswerRequest;
+use App\Http\Resources\ApplicationResource;
+use App\Models\Application;
+use App\Http\Requests\StoreApplicationRequest;
+use App\Http\Requests\UpdateApplicationRequest;
+use App\Models\ApplicationAnswer;
+use App\Models\ApplicationQuestion;
+use App\Models\ApplicationQuestionAnswer;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +19,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Symfony\Component\HttpFoundation\Request;
 
-class SurveyController extends Controller
+class ApplicationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,8 +30,8 @@ class SurveyController extends Controller
     {
         $user = $request->user();
 
-        return SurveyResource::collection(
-            Survey::where('user_id', $user->id)
+        return ApplicationResource::collection(
+            Application::where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')
                 ->paginate(2)
         );
@@ -40,10 +40,10 @@ class SurveyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSurveyRequest  $request
+     * @param  \App\Http\Requests\StoreApplicationRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSurveyRequest $request)
+    public function store(StoreApplicationRequest $request)
     {
         $data = $request->validated();
 
@@ -53,40 +53,40 @@ class SurveyController extends Controller
             $data['image'] = $relativePath;
         }
 
-        $survey = Survey::create($data);
+        $application = Application::create($data);
 
         // Create new questions
         foreach ($data['questions'] as $question) {
-            $question['survey_id'] = $survey->id;
+            $question['application_id'] = $application->id;
             $this->createQuestion($question);
         }
 
-        return new SurveyResource($survey);
+        return new ApplicationResource($application);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Survey  $survey
+     * @param  \App\Models\Application  $application
      * @return \Illuminate\Http\Response
      */
-    public function show(Survey $survey, Request $request)
+    public function show(Application $application, Request $request)
     {
         $user = $request->user();
-        if ($user->id !== $survey->user_id) {
+        if ($user->id !== $application->user_id) {
             return abort(403, 'Unauthorized action');
         }
-        return new SurveyResource($survey);
+        return new ApplicationResource($application);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSurveyRequest  $request
-     * @param  \App\Models\Survey  $survey
+     * @param  \App\Http\Requests\UpdateApplicationRequest  $request
+     * @param  \App\Models\Application  $application
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSurveyRequest $request, Survey $survey)
+    public function update(UpdateApplicationRequest $request, Application $application)
     {
         $data = $request->validated();
 
@@ -96,17 +96,17 @@ class SurveyController extends Controller
             $data['image'] = $relativePath;
 
             // If there is an old image, delete it
-            if ($survey->image) {
-                $absolutePath = public_path($survey->image);
+            if ($application->image) {
+                $absolutePath = public_path($application->image);
                 File::delete($absolutePath);
             }
         }
 
-        // Update survey in the database
-        $survey->update($data);
+        // Update application in the database
+        $application->update($data);
 
         // Get ids as plain array of existing questions
-        $existingIds = $survey->questions()->pluck('id')->toArray();
+        $existingIds = $application->questions()->pluck('id')->toArray();
         // Get ids as plain array of new questions
         $newIds = Arr::pluck($data['questions'], 'id');
         // Find questions to delete
@@ -115,45 +115,45 @@ class SurveyController extends Controller
         $toAdd = array_diff($newIds, $existingIds);
 
         // Delete questions by $toDelete array
-        SurveyQuestion::destroy($toDelete);
+        ApplicationQuestion::destroy($toDelete);
 
         // Create new questions
         foreach ($data['questions'] as $question) {
             if (in_array($question['id'], $toAdd)) {
-                $question['survey_id'] = $survey->id;
+                $question['application_id'] = $application->id;
                 $this->createQuestion($question);
             }
         }
 
         // Update existing questions
         $questionMap = collect($data['questions'])->keyBy('id');
-        foreach ($survey->questions as $question) {
+        foreach ($application->questions as $question) {
             if (isset($questionMap[$question->id])) {
                 $this->updateQuestion($question, $questionMap[$question->id]);
             }
         }
 
-        return new SurveyResource($survey);
+        return new ApplicationResource($application);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Survey  $survey
+     * @param  \App\Models\Application  $application
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Survey $survey, Request $request)
+    public function destroy(Application $application, Request $request)
     {
         $user = $request->user();
-        if ($user->id !== $survey->user_id) {
+        if ($user->id !== $application->user_id) {
             return abort(403, 'Unauthorized action.');
         }
 
-        $survey->delete();
+        $application->delete();
 
         // If there is an old image, delete it
-        if ($survey->image) {
-            $absolutePath = public_path($survey->image);
+        if ($application->image) {
+            $absolutePath = public_path($application->image);
             File::delete($absolutePath);
         }
 
@@ -223,28 +223,28 @@ class SurveyController extends Controller
             ],
             'description' => 'nullable|string',
             'data' => 'present',
-            'survey_id' => 'exists:App\Models\Survey,id'
+            'application_id' => 'exists:App\Models\Application,id'
         ]);
 
-        return SurveyQuestion::create($validator->validated());
+        return ApplicationQuestion::create($validator->validated());
     }
 
     /**
      * Update a question and return true or false
      *
-     * @param \App\Models\SurveyQuestion $question
+     * @param \App\Models\ApplicationQuestion $question
      * @param                            $data
      * @return bool
      * @throws \Illuminate\Validation\ValidationException
      * @author Zura Sekhniashvili <zurasekhniashvili@gmail.com>
      */
-    private function updateQuestion(SurveyQuestion $question, $data)
+    private function updateQuestion(ApplicationQuestion $question, $data)
     {
         if (is_array($data['data'])) {
             $data['data'] = json_encode($data['data']);
         }
         $validator = Validator::make($data, [
-            'id' => 'exists:App\Models\SurveyQuestion,id',
+            'id' => 'exists:App\Models\ApplicationQuestion,id',
             'question' => 'required|string',
             'type' => ['required', new Enum(QuestionTypeEnum::class)],
             'description' => 'nullable|string',
@@ -254,44 +254,44 @@ class SurveyController extends Controller
         return $question->update($validator->validated());
     }
 
-    public function getBySlug(Survey $survey)
+    public function getBySlug(Application $application)
     {
-        if (!$survey->status) {
+        if (!$application->status) {
             return response("", 404);
         }
 
         $currentDate = new \DateTime();
-        $expireDate = new \DateTime($survey->expire_date);
+        $expireDate = new \DateTime($application->expire_date);
         if ($currentDate > $expireDate) {
             return response("", 404);
         }
 
-        return new SurveyResource($survey);
+        return new ApplicationResource($application);
     }
 
-    public function storeAnswer(StoreSurveyAnswerRequest $request, Survey $survey)
+    public function storeAnswer(StoreApplicationAnswerRequest $request, Application $application)
     {
         $validated = $request->validated();
 
-        $surveyAnswer = SurveyAnswer::create([
-            'survey_id' => $survey->id,
+        $applicationAnswer = ApplicationAnswer::create([
+            'application_id' => $application->id,
             'start_date' => date('Y-m-d H:i:s'),
             'end_date' => date('Y-m-d H:i:s'),
         ]);
 
         foreach ($validated['answers'] as $questionId => $answer) {
-            $question = SurveyQuestion::where(['id' => $questionId, 'survey_id' => $survey->id])->get();
+            $question = ApplicationQuestion::where(['id' => $questionId, 'application_id' => $application->id])->get();
             if (!$question) {
                 return response("Invalid question ID: \"$questionId\"", 400);
             }
 
             $data = [
-                'survey_question_id' => $questionId,
-                'survey_answer_id' => $surveyAnswer->id,
+                'application_question_id' => $questionId,
+                'application_answer_id' => $applicationAnswer->id,
                 'answer' => is_array($answer) ? json_encode($answer) : $answer
             ];
 
-            $questionAnswer = SurveyQuestionAnswer::create($data);
+            $questionAnswer = ApplicationQuestionAnswer::create($data);
         }
 
         return response("", 201);

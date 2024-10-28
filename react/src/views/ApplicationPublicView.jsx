@@ -4,10 +4,10 @@ import { useParams } from "react-router-dom";
 import axiosClient from "../axios";
 import PublicQuestionView from "../components/PublicQuestionView";
 
-export default function SurveyPublicView() {
+export default function ApplicationPublicView() {
   const answers = {};
-  const [surveyFinished, setSurveyFinished] = useState(false);
-  const [survey, setSurvey] = useState({
+  const [applicationFinished, setApplicationFinished] = useState(false);
+  const [application, setApplication] = useState({
     questions: [],
   });
   const [loading, setLoading] = useState(false);
@@ -16,10 +16,10 @@ export default function SurveyPublicView() {
   useEffect(() => {
     setLoading(true);
     axiosClient
-      .get(`survey/get-by-slug/${slug}`)
+      .get(`application/get-by-slug/${slug}`)
       .then(({ data }) => {
         setLoading(false);
-        setSurvey(data.data);
+        setApplication(data.data);
       })
       .catch(() => {
         setLoading(false);
@@ -36,12 +36,12 @@ export default function SurveyPublicView() {
 
     console.log(answers);
     axiosClient
-      .post(`/survey/${survey.id}/answer`, {
+      .post(`/application/${application.id}/answer`, {
         answers,
       })
       .then((response) => {
         debugger;
-        setSurveyFinished(true);
+        setApplicationFinished(true);
       });
   }
 
@@ -52,27 +52,27 @@ export default function SurveyPublicView() {
         <form onSubmit={(ev) => onSubmit(ev)} className="container mx-auto p-4">
           <div className="grid grid-cols-6">
             <div className="mr-4">
-              <img src={survey.image_url} alt="" />
+              <img src={application.image_url} alt="" />
             </div>
 
             <div className="col-span-5">
-              <h1 className="text-3xl mb-3">{survey.title}</h1>
+              <h1 className="text-3xl mb-3">{application.title}</h1>
               <p className="text-gray-500 text-sm mb-3">
-                Expire Date: {survey.expire_date}
+                Expire Date: {application.expire_date}
               </p>
-              <p className="text-gray-500 text-sm mb-3">{survey.description}</p>
+              <p className="text-gray-500 text-sm mb-3">{application.description}</p>
             </div>
           </div>
 
-          {surveyFinished && (
+          {applicationFinished && (
             <div className="py-8 px-6 bg-blue-600 text-white w-[600px] mx-auto">
-              Thank you for participating in the survey
+              Thank you for participating in the application
             </div>
           )}
-          {!surveyFinished && (
+          {!applicationFinished && (
             <>
               <div>
-                {survey.questions.map((question, index) => (
+                {application.questions.map((question, index) => (
                   <PublicQuestionView
                     key={question.id}
                     question={question}
