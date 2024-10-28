@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Survey extends Model
+class Application extends Model
 {
     use HasFactory;
     use HasSlug;
@@ -26,11 +26,11 @@ class Survey extends Model
 
     public function questions()
     {
-        return $this->hasMany(SurveyQuestion::class);
+        return $this->hasMany(ApplicationQuestion::class);
     }
 
     public function answers()
     {
-        return $this->hasMany(SurveyAnswer::class);
+        return $this->hasMany(ApplicationAnswer::class);
     }
 }
