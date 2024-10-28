@@ -13,7 +13,7 @@ export default function PublicQuestionView({
     }
     answerChanged(selectedOptions);
   }
-
+  console.log(question);
   return (
     <>
       <fieldset className="mb-4">

@@ -25,15 +25,16 @@ export default function ApplicationItem({ application, onDeleteClick, pageType }
         </TButton>) : null }
         {pageType == 'yours'?(<div className="my-2 h-1"></div>):null}
         <TButton href={`/application/public/${application.slug}`}>
-          <CheckCircleIcon className="w-6 h-6 mr-2" />
+        <img 
+          src={pageType !== 'yours' ? 'https://freelogopng.com/images/all_img/1656996524linkedin-app-icon.png' : 'https://www.creativefabrica.com/wp-content/uploads/2023/04/26/share-icon-with-3d-vector-icon-Graphics-68113076-1.jpg'} 
+          alt="Easy Apply" 
+          className={`w-7 h-7 mr-3 ${pageType === 'yours' ? 'rounded-full' : ''}`} 
+        />
           {pageType == 'yours'? "Share" : "Easy Apply"}
         </TButton>
-        <div className="flex justify-between items-center">
-          <TButton href={`/view/application/${application.slug}`} circle link>
-            <ArrowTopRightOnSquareIcon className="w-5 h-5" />
-          </TButton>
+        <div className="flex justify-end items-center">
 
-          {application.id && (
+          {application.id && pageType=='yours' &&(
             <TButton onClick={ev => onDeleteClick(application.id)} circle link color="red">
               <TrashIcon className="w-5 h-5" />
             </TButton>

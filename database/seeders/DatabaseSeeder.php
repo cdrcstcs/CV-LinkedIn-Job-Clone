@@ -24,18 +24,18 @@ class DatabaseSeeder extends Seeder
 
         // Create users
         $users = User::factory()
-            ->count(5) // Adjust the number of users as needed
+            ->count(1) // Adjust the number of users as needed
             ->create();
 
         // Create applications with associated questions and answers
         foreach ($users as $user) {
             Application::factory()
-                ->count(2) // Adjust the number of applications per user as needed
+                ->count(10) // Adjust the number of applications per user as needed
                 ->create(['user_id' => $user->id])
                 ->each(function ($application) use ($faker) { // Pass Faker instance
                     // Create associated ApplicationQuestions
                     ApplicationQuestion::factory()
-                        ->count(3) // Adjust the number of questions per application as needed
+                        ->count(10) // Adjust the number of questions per application as needed
                         ->create(['application_id' => $application->id])
                         ->each(function ($question) use ($application, $faker) { // Pass Faker instance
                             // Create an associated ApplicationAnswer

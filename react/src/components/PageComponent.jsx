@@ -33,7 +33,7 @@ export default function PageComponent({ title, buttons = "", children, pageType 
               type="text"
               value={searchValue}
               onChange={handleSearchChange}
-              placeholder="Search..."
+              placeholder="Search job by company name or description"
               className="border border-gray-300 rounded-l-md p-2 flex-1"
             />
             <button type="submit" className="ml-2 bg-blue-500 text-white rounded-md px-4 py-2">
